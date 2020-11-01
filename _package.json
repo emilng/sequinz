@@ -1,0 +1,32 @@
+{
+  "name": "sequinz",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^4.4.1",
+    "phaser": "^3.24.1",
+    "prettier": "^2.1.2",
+    "webmidi": "^2.5.1",
+    "webpack": "^5.1.2",
+    "webpack-cli": "4.0.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "webpack serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilng/sequinz.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emilng/sequinz/issues"
+  },
+  "homepage": "https://github.com/emilng/sequinz#readme"
+}
