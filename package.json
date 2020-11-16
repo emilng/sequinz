@@ -1,11 +1,19 @@
 {
+  "name": "sequinz",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
     "test": "jest"
   },
   "dependencies": {
-    "svelte": "^3.24.0"
+    "@tonaljs/tonal": "^4.5.1",
+    "phaser": "^3.24.1",
+    "svelte": "^3.24.0",
+    "tone": "^14.7.58",
+    "webmidi": "^2.5.1"
   },
   "devDependencies": {
     "@snowpack/app-scripts-svelte": "^1.9.2",
@@ -15,6 +23,11 @@
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/svelte": "^3.0.0",
     "jest": "^26.2.2",
+    "prettier": "^2.1.2",
     "snowpack": "^2.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilng/sequinz.git"
   }
 }
