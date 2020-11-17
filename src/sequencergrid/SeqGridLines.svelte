@@ -27,7 +27,7 @@
 	}
 
 	function drawGrid(settings) {
-		if (!settings) return;
+		if (!settings || !canvas) return;
 		const {
 			width,
 			height,
@@ -37,7 +37,6 @@
 			columns,
 			rowHeight,
 		} = settings;
-		if (!width) return;
 
 		canvas.width = width * pixelRatio;
 		canvas.height = height * pixelRatio;
@@ -62,8 +61,8 @@
 		ctx.save();
 		ctx.lineWidth = 2;
 		ctx.strokeStyle = '#111';
-		for (let i = 0; i < 4; i += 1) {
-			const quarterWidth = width / 4;
+		for (let i = 0; i < 8; i += 1) {
+			const quarterWidth = width / 8;
 			const xPos = i * quarterWidth * pixelRatio;
 			drawLine(xPos, 0, xPos, drawHeight);
 		}

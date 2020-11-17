@@ -7,14 +7,13 @@
 	import SeqGridLines from './SeqGridLines.svelte';
 
 	let settings = {
-		division: 16,
+		division: 32,
 		key: 'C',
 		octave: 3,
 		scale: 'chromatic',
 	};
 
 	let dimensions = {
-		maxDivisions: 64,
 		rowHeight: 24,
 		pixelRatio: window.devicePixelRatio,
 	};
@@ -36,7 +35,6 @@
 			width,
 			height,
 			columnWidth: width / settings.division,
-			indexColumnWidth: width / dimensions.maxDivisions,
 			rows: scaleNotes.length,
 			columns: settings.division,
 		};
@@ -54,31 +52,29 @@
 	}
 
 	function updateNotes() {
-		const { indexColumnWidth, rowHeight } = dimensions;
+		const { columnWidth, rowHeight } = dimensions;
 		notes = notes.map((note) => {
 			return {
 				...note,
-				left: note.column * indexColumnWidth,
+				left: note.column * columnWidth,
 				top: note.row * rowHeight,
-				width: note.columnWidth * indexColumnWidth,
+				width: columnWidth,
 			};
 		});
 	}
 
 	function addNote(event) {
 		const { clickX, clickY } = event.detail;
-		const { rowHeight, columnWidth, maxDivisions } = dimensions;
+		const { rowHeight, columnWidth } = dimensions;
 		const clickRow = Math.floor(clickY / rowHeight);
-		const snapColumn = Math.floor(clickX / columnWidth);
-		const indexColumn = (snapColumn / settings.division) * maxDivisions;
+		const clickColumn = Math.floor(clickX / columnWidth);
 		const noteObj = {
-			left: snapColumn * columnWidth,
+			left: clickColumn * columnWidth,
 			top: clickRow * rowHeight,
 			width: columnWidth,
 			height: rowHeight,
 			row: clickRow,
-			column: indexColumn,
-			columnWidth: maxDivisions / settings.division,
+			column: clickColumn,
 		};
 		notes = [...notes, noteObj];
 	}

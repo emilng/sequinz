@@ -3,7 +3,7 @@
 	import { Note, Scale, ScaleType } from '@tonaljs/tonal';
 
 	export let settings = {
-		division: 16,
+		division: 32,
 		key: 'C',
 		octave: 3,
 		scale: 'chromatic',
@@ -11,27 +11,10 @@
 
 	const dispatch = createEventDispatcher();
 
-	let selectedDivision = settings.division || 16;
+	let selectedDivision = settings.division || 32;
 	let selectedKey = settings.key || 'C';
 	let selectedOctave = settings.octave || 3;
 	let selectedScale = settings.scale || 'chromatic';
-
-	const getDivisions = (maxDivisions) => {
-		const divisions = [];
-		let currentDivision = 4;
-		while(currentDivision <= maxDivisions) {
-			divisions.push(
-				{
-					value: currentDivision,
-					display: `1/${currentDivision}`,
-				}
-			)
-			currentDivision *= 2;
-		}
-		return divisions;
-	}
-
-	const DIVISIONS = getDivisions(64);
 
 	const getNoteDisplay = (note) => {
 		const enharmonic = Note.enharmonic(note);
@@ -60,11 +43,6 @@
 			octave: selectedOctave,
 			scale: selectedScale,
 		});
-	}
-
-	function updateDivision(event) {
-		selectedDivision = parseInt(event.target.value, 10);
-		updateSettings();
 	}
 
 	function updateScale(event) {
@@ -104,14 +82,6 @@
 </style>
 
 <div class="settings-container">
-	<div class="settings-column">
-		<label for="select-division">Division</label>
-	  <select id="select-division" value={selectedDivision} on:change={updateDivision} >
-	    {#each DIVISIONS as division}
-	      <option value={division.value}>{division.display}</option>
-	    {/each}
-	  </select>
-	</div>
 	<div class="settings-column">
 		<label for="select-scale">Scale</label>
 	  <select id="select-scale" value={selectedScale} on:change={updateScale} >
