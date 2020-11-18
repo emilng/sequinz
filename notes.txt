@@ -1,0 +1,19 @@
+Sequinz
+
+data source -> graphical score -> outputs
+
+data source
+	grid sequence
+	random sequence
+graphical score
+	score element
+		inputs:
+			data source
+			trigger source
+		outputs:
+			event out
+			sound out
+			display out
+outputs
+	sound out
+	display out
