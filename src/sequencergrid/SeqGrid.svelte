@@ -3,6 +3,7 @@
 	import { Scale } from '@tonaljs/tonal';
 	import SeqSettings from './SeqSettings.svelte';
 	import SeqRow from './SeqRow.svelte';
+	import SeqNotes, { addNote, deleteNote, updateNotes } from './SeqNotes.svelte';
 	import SeqNote from './SeqNote.svelte';
 	import SeqGridLines from './SeqGridLines.svelte';
 
@@ -42,7 +43,7 @@
 
 	function updateGrid () {
 		updateDimensions();
-		updateNotes();
+		notes = updateNotes(notes, dimensions);
 	}
 
 	function updateSettings(event) {
@@ -51,32 +52,13 @@
 		updateGrid();
 	}
 
-	function updateNotes() {
-		const { columnWidth, rowHeight } = dimensions;
-		notes = notes.map((note) => {
-			return {
-				...note,
-				left: note.column * columnWidth,
-				top: note.row * rowHeight,
-				width: columnWidth,
-			};
-		});
+	function handleAddNote(event) {
+		const { clickX, clickY } = event.detail;
+		notes = addNote(notes, dimensions, clickX, clickY);
 	}
 
-	function addNote(event) {
-		const { clickX, clickY } = event.detail;
-		const { rowHeight, columnWidth } = dimensions;
-		const clickRow = Math.floor(clickY / rowHeight);
-		const clickColumn = Math.floor(clickX / columnWidth);
-		const noteObj = {
-			left: clickColumn * columnWidth,
-			top: clickRow * rowHeight,
-			width: columnWidth,
-			height: rowHeight,
-			row: clickRow,
-			column: clickColumn,
-		};
-		notes = [...notes, noteObj];
+	function handleDeleteNote(event) {
+		notes = deleteNote(notes, event.detail);
 	}
 
 	onMount(() => {
@@ -114,12 +96,16 @@
 		class="grid-canvas"
 	>
 		<SeqGridLines
-			on:addNote={addNote}
+			on:addNote={handleAddNote}
 			settings={dimensions}
 		/>
 		{#each notes as noteSettings }
 			<SeqNote settings={noteSettings} />
 		{/each}
+		<SeqNotes
+			on:deleteNote={handleDeleteNote}
+			{notes}
+		/>
 	</div>
 </div>
 <svelte:window on:resize|passive={updateGrid} />
