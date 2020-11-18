@@ -1,62 +1,37 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	import { Note, Scale, ScaleType } from '@tonaljs/tonal';
+	import SeqScaleSettings from './SeqScaleSettings.svelte';
+	import SeqKeySettings from './SeqKeySettings.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let settings = {
 		division: 32,
 		key: 'C',
 		octave: 3,
-		scale: 'chromatic',
+		scale: 'ionian',
 	};
 
-	const dispatch = createEventDispatcher();
-
-	let selectedDivision = settings.division || 32;
-	let selectedKey = settings.key || 'C';
-	let selectedOctave = settings.octave || 3;
-	let selectedScale = settings.scale || 'chromatic';
-
-	const getNoteDisplay = (note) => {
-		const enharmonic = Note.enharmonic(note);
-		if (note === enharmonic) {
-			return note;
-		} else if (note === 'G#' || note === 'Ab') {
-			return 'G#/Ab';
-		} else {
-			return [note, enharmonic].sort().join('/');
-		}
-	};
-
-	const CHROMATIC_NOTES = Scale.get('A chromatic').notes.map((note) => {
-		return {
-			display: getNoteDisplay(note),
-			value: note,
-		};
-	});
-
-	const SCALE_NAMES = ScaleType.names().sort();
+	let key, scale;
+	$: ({ key, scale } = settings);
 
 	function updateSettings() {
-		dispatch('update', {
-			division: selectedDivision,
-			key: selectedKey,
-			octave: selectedOctave,
-			scale: selectedScale,
-		});
+		dispatch('update', settings);
 	}
 
 	function updateScale(event) {
-    selectedScale = event.target.value;
-    updateSettings();
-  }
-
-  function updateOctave(event) {
-  	selectedOctave = parseInt(event.target.value, 10);
+    settings = {
+    	...settings,
+    	scale: event.detail,
+    }
     updateSettings();
   }
 
   function updateKey(event) {
-  	selectedKey = event.target.value;
+  	settings = {
+  		...settings,
+  		key: event.detail,
+  	}
     updateSettings();
   }
 </script>
@@ -82,24 +57,11 @@
 </style>
 
 <div class="settings-container">
-	<div class="settings-column">
-		<label for="select-scale">Scale</label>
-	  <select id="select-scale" value={selectedScale} on:change={updateScale} >
-	    {#each SCALE_NAMES as scaleName}
-	      <option value={scaleName}>{scaleName}</option>
-	    {/each}
-	  </select>
-	</div>
-	<div class="settings-column">
-		<label for="select-octave">Octave</label>
-		<input id="select-octave" type="number" bind:value={selectedOctave} min={0} max={8} on:change={updateOctave} />
-	</div>
-	<div class="settings-column">
-		<label for="select-key">Key</label>
-		<select id="select-key" value={selectedKey} on:change={updateKey}>
-			{#each CHROMATIC_NOTES as noteObj}
-				<option value={noteObj.value}>{noteObj.display}</option>
-			{/each}
-		</select>
-	</div>
+	<div>{key} {scale}</div>
+	<SeqKeySettings
+		on:update={updateKey}
+	/>
+	<SeqScaleSettings
+		on:update={updateScale}
+	/>
 </div>

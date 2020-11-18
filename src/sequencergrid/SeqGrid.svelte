@@ -11,7 +11,7 @@
 		division: 32,
 		key: 'C',
 		octave: 3,
-		scale: 'chromatic',
+		scale: 'ionian',
 	};
 
 	let dimensions = {
