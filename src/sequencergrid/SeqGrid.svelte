@@ -2,9 +2,8 @@
 	import { onMount } from "svelte";
 	import { Scale } from '@tonaljs/tonal';
 	import SeqSettings from './SeqSettings.svelte';
-	import SeqRow from './SeqRow.svelte';
+	import SeqRowLabels from './SeqRowLabels.svelte';
 	import SeqNotes, { addNote, deleteNote, updateNotes } from './SeqNotes.svelte';
-	import SeqNote from './SeqNote.svelte';
 	import SeqGridLines from './SeqGridLines.svelte';
 
 	let settings = {
@@ -21,7 +20,7 @@
 
 	let notes = [];
 
-	let scaleNotes = getScaleNotes(settings);
+	let rowLabels = getScaleNotes(settings);
 
 	function getScaleNotes({key, octave, scale}) {
 		const range = Scale.rangeOf(`${key} ${scale}`);
@@ -30,13 +29,13 @@
 
 	function updateDimensions() {
 		const width = window.innerWidth - 96;
-		const height = dimensions.rowHeight * scaleNotes.length;
+		const height = dimensions.rowHeight * rowLabels.length;
 		dimensions = {
 			...dimensions,
 			width,
 			height,
 			columnWidth: width / settings.division,
-			rows: scaleNotes.length,
+			rows: rowLabels.length,
 			columns: settings.division,
 		};
 	}
@@ -48,7 +47,7 @@
 
 	function updateSettings(event) {
 		settings = event.detail;
-		scaleNotes = getScaleNotes(settings);
+		rowLabels = getScaleNotes(settings);
 		updateGrid();
 	}
 
@@ -73,11 +72,6 @@
 		white-space: nowrap;
 	}
 
- .scale-note-container {
- 	display: inline-block;
- 	vertical-align: top;
- }
-
  .grid-canvas {
 		display: inline-block;
 		position: relative;
@@ -87,21 +81,12 @@
 
 <SeqSettings on:update={updateSettings} {settings} />
 <div class="grid-container">
-	<div class="scale-note-container">
-		{#each scaleNotes as noteName }
-			<SeqRow {noteName} division={settings.division} />
-		{/each}
-	</div>
-	<div
-		class="grid-canvas"
-	>
+	<SeqRowLabels labels={rowLabels} />
+	<div class="grid-canvas">
 		<SeqGridLines
 			on:addNote={handleAddNote}
 			settings={dimensions}
 		/>
-		{#each notes as noteSettings }
-			<SeqNote settings={noteSettings} />
-		{/each}
 		<SeqNotes
 			on:deleteNote={handleDeleteNote}
 			{notes}
