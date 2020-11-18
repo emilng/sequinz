@@ -1,10 +1,12 @@
 <script>
-	import { onMount } from "svelte";
+	import { createEventDispatcher, onMount } from "svelte";
 	import { Scale } from '@tonaljs/tonal';
 	import SeqSettings from './SeqSettings.svelte';
 	import SeqRowLabels from './SeqRowLabels.svelte';
 	import SeqNotes, { addNote, deleteNote, updateNotes } from './SeqNotes.svelte';
 	import SeqGridLines from './SeqGridLines.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	let settings = {
 		division: 32,
@@ -18,9 +20,21 @@
 		pixelRatio: window.devicePixelRatio,
 	};
 
-	let notes = [];
-
 	let rowLabels = getScaleNotes(settings);
+
+	let notes = [];
+	let noteData = {};
+
+	function updateNoteData() {
+		noteData = {};
+		notes.forEach((noteObj) => {
+			if (noteObj.column in noteData === false) {
+				noteData[noteObj.column] = [];
+			}
+			noteData[noteObj.column].push(rowLabels[noteObj.row]);
+		});
+		dispatch('update', noteData);
+	}
 
 	function getScaleNotes({key, octave, scale}) {
 		const range = Scale.rangeOf(`${key} ${scale}`);
@@ -54,10 +68,12 @@
 	function handleAddNote(event) {
 		const { clickX, clickY } = event.detail;
 		notes = addNote(notes, dimensions, clickX, clickY);
+		updateNoteData();
 	}
 
 	function handleDeleteNote(event) {
 		notes = deleteNote(notes, event.detail);
+		updateNoteData();
 	}
 
 	onMount(() => {
