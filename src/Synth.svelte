@@ -3,13 +3,15 @@
 	import { createEventDispatcher, onMount } from "svelte";
 	export let chord;
 	export let chordPlaying = false;
-	export let notePlaying = false;
+	export let highNotePlaying = false;
+	export let midNotePlaying = false;
 
 	const dispatch = createEventDispatcher();
 
 	let audioEnabled = false;
 
-	$: updateNotePlaying(notePlaying);
+	$: updateHighNotePlaying(highNotePlaying);
+	$: updateMidNotePlaying(midNotePlaying);
 	$: updateChordPlaying(chordPlaying);
 
 	const chordSynth = new Tone.PolySynth(Tone.MonoSynth).toDestination();
@@ -33,8 +35,8 @@
 		volume: -20,
 	});
 
-	const noteSynth = new Tone.PolySynth().toDestination();
-	noteSynth.set({
+	const highNoteSynth = new Tone.PolySynth().toDestination();
+	highNoteSynth.set({
 		detune: 3600,
 		envelope: {
 			attack: 0.01,
@@ -53,6 +55,25 @@
 		volume: -18,
 	});
 
+	const midNoteSynth = new Tone.PolySynth().toDestination();
+	midNoteSynth.set({
+		envelope: {
+			attack: 0.01,
+			release: 0.4,
+		},
+		filterEnvelope: {
+			attack: 0.01,
+			release: 0.4,
+		},
+		filter: {
+			frequency: 0.4,
+		},
+		oscillator: {
+			type: 'triangle',
+		},
+		volume: -5,
+	});
+
 
 	function updateChordPlaying() {
 		if (audioEnabled && chordPlaying === true) {
@@ -60,22 +81,34 @@
 		}
 	}
 
+	function updateMidNotePlaying() {
+		if (audioEnabled && midNotePlaying === true) {
+			const midNote = chord[getRandomInt(chord.length)];
+			midNoteSynth.triggerAttackRelease(midNote, 1);
+		}
+		setTimeout(() => {
+			dispatch('updateMidNotePlaying', false);
+		}, 100);
+	}
+
 	function getRandomInt(max) {
 	  return Math.floor(Math.random() * Math.floor(max));
 	}
 
-	function updateNotePlaying() {
-		if (audioEnabled && notePlaying === true) {
+	function updateHighNotePlaying() {
+		if (audioEnabled && highNotePlaying === true) {
 			const noteToPlay = chord[getRandomInt(chord.length)];
-			noteSynth.triggerAttackRelease(noteToPlay, .1);
+			highNoteSynth.triggerAttackRelease(noteToPlay, .2);
 		}
 		setTimeout(() => {
-			dispatch('updateNotePlaying', false);
+			dispatch('updateHighNotePlaying', false);
 		}, 100);
 	}
+
 	function handleStart() {
 		audioEnabled = true;
-		dispatch('updateNotePlaying', false);
+		dispatch('updateHighNotePlaying', false);
+		dispatch('updateMidNotePlaying', false);
 	}
 
 	function handleStop() {
@@ -84,7 +117,7 @@
 
 	onMount(() => {
 		// attach a click listener to a play button
-		document.querySelector('.synth-play')?.addEventListener('click', async () => {
+		document.querySelector('.synth-play').addEventListener('click', async () => {
 			await Tone.start()
 			console.log('audio is ready');
 			audioEnabled = true;

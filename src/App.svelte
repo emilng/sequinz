@@ -6,7 +6,8 @@
   let noteData = {};
   let chord = [];
   let chordPlaying = false;
-  let notePlaying = false;
+  let highNotePlaying = false;
+  let midNotePlaying = false;
 
   function handleUpdateNotes(event) {
     noteData = event.detail;
@@ -20,8 +21,12 @@
     chordPlaying = event.detail;
   }
 
-  function handleUpdateNotePlaying(event) {
-    notePlaying = event.detail;
+  function handleUpdateHighNotePlaying(event) {
+    highNotePlaying = event.detail;
+  }
+
+  function handleUpdateMidNotePlaying(event) {
+    midNotePlaying = event.detail;
   }
 </script>
 
@@ -40,13 +45,16 @@
   <Synth
     {chord}
     {chordPlaying}
-    {notePlaying}
-    on:updateNotePlaying={handleUpdateNotePlaying}
+    {midNotePlaying}
+    {highNotePlaying}
+    on:updateMidNotePlaying={handleUpdateMidNotePlaying}
+    on:updateHighNotePlaying={handleUpdateHighNotePlaying}
   />
   <Stage
     on:updateChord={handleUpdateChord}
     on:updateChordPlaying={handleUpdateChordPlaying}
-    on:updateNotePlaying={handleUpdateNotePlaying}
+    on:updateMidNotePlaying={handleUpdateMidNotePlaying}
+    on:updateHighNotePlaying={handleUpdateHighNotePlaying}
     {noteData}
   />
   <SeqGrid on:update={handleUpdateNotes}/>
