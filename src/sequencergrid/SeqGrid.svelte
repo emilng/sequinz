@@ -84,13 +84,11 @@
 	function handlePopulateGrid() {
 		notes = [];
 		for (let i = 0; i < settings.division; i += 1) {
-			if (getRandomInt(3) === 1) {
-				const startTriad = getRandomInt(4);
-				const clickX = i * dimensions.columnWidth;
-				for (let j = 0; j < 5; j += 2) {
-					const clickY = (startTriad + j) * dimensions.rowHeight;
-					notes = addNote(notes, dimensions, clickX, clickY);
-				}
+			const startTriad = getRandomInt(4);
+			const clickX = i * dimensions.columnWidth;
+			for (let j = 0; j < 5; j += 2) {
+				const clickY = (startTriad + j) * dimensions.rowHeight;
+				notes = addNote(notes, dimensions, clickX, clickY);
 			}
 		}
 		updateNoteData();
@@ -103,6 +101,7 @@
 
 	onMount(() => {
 		updateGrid()
+		handlePopulateGrid()
 	});
 
 </script>
