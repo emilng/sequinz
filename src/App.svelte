@@ -1,5 +1,13 @@
 <script>
+  import Synth from './Synth.svelte';
+  import Stage from './Stage.svelte';
   import SeqGrid from './sequencergrid/SeqGrid.svelte';
+
+  let noteData = [];
+
+  function handleUpdateNotes(event) {
+    noteData = event.detail;
+  }
 </script>
 
 <style>
@@ -14,5 +22,7 @@
 </style>
 
 <div class="App">
-  <SeqGrid />
+  <Synth />
+  <Stage {noteData} />
+  <SeqGrid on:update={handleUpdateNotes}/>
 </div>

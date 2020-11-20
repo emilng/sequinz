@@ -63,6 +63,7 @@
 		settings = event.detail;
 		rowLabels = getScaleNotes(settings);
 		updateGrid();
+		updateNoteData();
 	}
 
 	function handleAddNote(event) {

@@ -34,6 +34,14 @@
   	}
     updateSettings();
   }
+
+  function populateGrid(event) {
+  	dispatch('populateGrid');
+  }
+
+  function clearPattern(event) {
+  	dispatch('clearPattern');
+  }
 </script>
 
 <style>
@@ -42,12 +50,11 @@
 	}
 
 	.settings-container {
-    border-bottom: 1px solid #999;
-    box-shadow: 0 1px 1px #ddd;
-    margin-bottom: 0.4rem;
+		border-bottom: 1px solid #999;
+    box-shadow: 0 1px 0px #ddd;
     padding-bottom: 0.1rem;
-    padding-left: 3.2rem;
-		width: 100%;
+    width: calc(100% - 3rem);
+    margin: 0 1rem 0.4rem 1rem;
 	}
 
 	.settings-column {
@@ -64,4 +71,8 @@
 	<SeqScaleSettings
 		on:update={updateScale}
 	/>
+	<div>
+		<button on:click={populateGrid} >Populate grid</button>
+		<button on:click={clearPattern} >Clear pattern</button>
+	</div>
 </div>
