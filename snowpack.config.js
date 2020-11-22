@@ -6,6 +6,9 @@ module.exports = {
   plugins: [
     '@snowpack/plugin-svelte',
     '@snowpack/plugin-dotenv',
+    [
+      '@snowpack/plugin-webpack',
+    ],
   ],
   install: [
     /* ... */
@@ -17,7 +20,7 @@ module.exports = {
     /* ... */
   },
   buildOptions: {
-    /* ... */
+    baseUrl: './',
   },
   proxy: {
     /* ... */

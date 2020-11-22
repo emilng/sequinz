@@ -4,8 +4,9 @@
   "description": "Sequinz is a sequencer for the creation of graphic score sequences.",
   "author": "Emil Ng",
   "scripts": {
-    "start": "snowpack dev",
     "build": "snowpack build",
+    "deploy": "gh-pages -d build",
+    "start": "snowpack dev",
     "test": "jest"
   },
   "dependencies": {
@@ -20,9 +21,11 @@
     "@snowpack/plugin-dotenv": "^2.0.4",
     "@snowpack/plugin-run-script": "^2.2.0",
     "@snowpack/plugin-svelte": "^3.2.0",
+    "@snowpack/plugin-webpack": "^2.1.1",
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/svelte": "^3.0.0",
     "canvas": "^2.6.1",
+    "gh-pages": "^3.1.0",
     "jest": "^26.2.2",
     "prettier": "^2.1.2",
     "snowpack": "^2.16.0"
