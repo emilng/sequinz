@@ -79,6 +79,9 @@
 		if (audioEnabled && chordPlaying === true) {
 			chordSynth.triggerAttackRelease(chord, 3.5);
 		}
+		setTimeout(() => {
+			dispatch('updateChordPlaying', false);
+		}, 100);
 	}
 
 	function updateMidNotePlaying() {

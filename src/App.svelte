@@ -47,6 +47,7 @@
     {chordPlaying}
     {midNotePlaying}
     {highNotePlaying}
+    on:updateChordPlaying={handleUpdateChordPlaying}
     on:updateMidNotePlaying={handleUpdateMidNotePlaying}
     on:updateHighNotePlaying={handleUpdateHighNotePlaying}
   />

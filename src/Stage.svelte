@@ -31,8 +31,6 @@
 					dispatch('updateChord', noteData[column]);
 				}
 				dispatch('updateChordPlaying', true);
-			} else {
-				dispatch('updateChordPlaying', false);
 			}
 			column += 1;
 			if (column >= 32) {
