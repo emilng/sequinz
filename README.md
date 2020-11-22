@@ -1,7 +1,7 @@
 Sequinz
 =========
 
-Sequinz is a sequencer for the creation of graphic score sequences.
+Sequinz is a graphic score sequencing tool.
 
 ### Version
 0.0.1

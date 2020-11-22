@@ -1,7 +1,7 @@
 {
   "name": "sequinz",
   "version": "0.0.1",
-  "description": "Sequinz is a sequencer for the creation of graphic score sequences.",
+  "description": "Sequinz is a graphic score sequencing tool.",
   "author": "Emil Ng",
   "scripts": {
     "build": "snowpack build",
