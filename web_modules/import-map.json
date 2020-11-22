@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "@tonaljs/tonal": "./@tonaljs/tonal.js",
+    "phaser": "./phaser.js",
+    "svelte": "./svelte.js",
+    "svelte/internal": "./svelte/internal.js",
+    "tone": "./tone.js"
+  }
+}
