@@ -7,12 +7,12 @@ Sequinz is a graphic score sequencing tool.
 0.0.1
 
 ### Tech
-svelte - gui framework
-snowpack - front-end build tool
-tonaljs - music theory library
-phaser - game framework
-tone - web audio library
-webmidi - web midi library
+- svelte - gui framework
+- snowpack - front-end build tool
+- tonaljs - music theory library
+- phaser - game framework
+- tone - web audio library
+- webmidi - web midi library
 
 ### Development
 Install npm packages
