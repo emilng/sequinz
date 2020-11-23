@@ -142,13 +142,6 @@ function instance($$self, $$props, $$invalidate) {
 			const midNote = chord[getRandomInt(chord.length)];
 			midNoteSynth.triggerAttackRelease(midNote, 1);
 		}
-
-		setTimeout(
-			() => {
-				dispatch("updateMidNotePlaying", false);
-			},
-			100
-		);
 	}
 
 	function updateHighNotePlaying() {
@@ -156,13 +149,6 @@ function instance($$self, $$props, $$invalidate) {
 			const noteToPlay = chord[getRandomInt(chord.length)];
 			highNoteSynth.triggerAttackRelease(noteToPlay, 0.2);
 		}
-
-		setTimeout(
-			() => {
-				dispatch("updateHighNotePlaying", false);
-			},
-			100
-		);
 	}
 
 	function handleStart() {

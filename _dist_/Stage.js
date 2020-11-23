@@ -34,7 +34,8 @@ function create_fragment(ctx) {
 	};
 }
 
-function createNoteCircle(circle, id, velocity) {
+function createNoteCircle(physics, circle, id, velocity) {
+	physics.add.existing(circle);
 	const angle = Math.random() * Math.PI;
 	const x = Math.cos(angle) * velocity;
 	const y = Math.sin(angle) * velocity;
@@ -64,6 +65,17 @@ function instance($$self, $$props, $$invalidate) {
 		scene: { create }
 	};
 
+	function triggerMessage(message) {
+		dispatch(message, true);
+
+		setTimeout(
+			() => {
+				dispatch(message, false);
+			},
+			100
+		);
+	}
+
 	function collideWorld(body, blockedUp, blockedDown, blockedLeft, blockedRight) {
 		if (body.id === "chord") {
 			if (blockedDown) {
@@ -71,9 +83,7 @@ function instance($$self, $$props, $$invalidate) {
 					dispatch("updateChord", noteData[column]);
 				}
 
-				dispatch("updateChordPlaying", true);
-			} else {
-				dispatch("updateChordPlaying", false);
+				triggerMessage("updateChordPlaying");
 			}
 
 			column += 1;
@@ -84,30 +94,26 @@ function instance($$self, $$props, $$invalidate) {
 		}
 
 		if (body.id === "highNote") {
-			dispatch("updateHighNotePlaying", true);
+			triggerMessage("updateHighNotePlaying");
 		}
 
 		if (body.id === "midNote") {
-			dispatch("updateMidNotePlaying", true);
+			triggerMessage("updateMidNotePlaying");
 		}
 	}
 
 	function create() {
-		const c1 = this.add.circle(200, 100, 60, 16711680);
+		const chord = this.add.circle(200, 100, 60, 16711680);
 		const midNote1 = this.add.circle(100, 100, 30, 10066329);
 		const highNote1 = this.add.circle(300, 100, 10, 16777215);
 		const highNote2 = this.add.circle(300, 100, 10, 16777215);
 		const highNote3 = this.add.circle(300, 100, 10, 16777215);
-		this.physics.add.existing(c1);
-		this.physics.add.existing(midNote1);
-		this.physics.add.existing(highNote1);
-		this.physics.add.existing(highNote2);
-		this.physics.add.existing(highNote3);
-		createNoteCircle(c1, "chord", 100);
-		createNoteCircle(midNote1, "midNote", 150);
-		createNoteCircle(highNote1, "highNote", 200);
-		createNoteCircle(highNote2, "highNote", 200);
-		createNoteCircle(highNote3, "highNote", 200);
+		const createPhysicsNoteCircle = createNoteCircle.bind(this, this.physics);
+		createPhysicsNoteCircle(chord, "chord", 100);
+		createPhysicsNoteCircle(midNote1, "midNote", 150);
+		createPhysicsNoteCircle(highNote1, "highNote", 200);
+		createPhysicsNoteCircle(highNote2, "highNote", 200);
+		createPhysicsNoteCircle(highNote3, "highNote", 200);
 		this.physics.world.on("worldbounds", collideWorld);
 	}
 

@@ -39,6 +39,7 @@ function create_fragment(ctx) {
 			}
 		});
 
+	synth.$on("updateChordPlaying", /*handleUpdateChordPlaying*/ ctx[7]);
 	synth.$on("updateMidNotePlaying", /*handleUpdateMidNotePlaying*/ ctx[9]);
 	synth.$on("updateHighNotePlaying", /*handleUpdateHighNotePlaying*/ ctx[8]);
 	stage = new Stage({ props: { noteData: /*noteData*/ ctx[0] } });
