@@ -24,13 +24,20 @@
     },
 	};
 
+	function triggerMessage(message) {
+		dispatch(message, true);
+		setTimeout(() => {
+			dispatch(message, false);
+		}, 100);
+	}
+
 	function collideWorld(body, blockedUp, blockedDown, blockedLeft, blockedRight) {
 		if (body.id === 'chord') {
 			if (blockedDown) {
 				if (column in noteData) {
 					dispatch('updateChord', noteData[column]);
 				}
-				dispatch('updateChordPlaying', true);
+				triggerMessage('updateChordPlaying');
 			}
 			column += 1;
 			if (column >= 32) {
@@ -38,14 +45,15 @@
 			}
 		}
 		if (body.id === 'highNote') {
-			dispatch('updateHighNotePlaying', true);
+			triggerMessage('updateHighNotePlaying');
 		}
 		if (body.id === 'midNote') {
-			dispatch('updateMidNotePlaying', true);
+			triggerMessage('updateMidNotePlaying');
 		}
 	}
 
-	function createNoteCircle(circle, id, velocity) {
+	function createNoteCircle(physics, circle, id, velocity) {
+		physics.add.existing(circle);
 		const angle = Math.random() * Math.PI;
 		const x = Math.cos(angle) * velocity;
 		const y = Math.sin(angle) * velocity;
@@ -60,7 +68,7 @@
 
 	function create() {
 
-		const c1 = this.add.circle(200, 100, 60, 0xff0000);
+		const chord = this.add.circle(200, 100, 60, 0xff0000);
 
 		const midNote1 = this.add.circle(100, 100, 30, 0x999999);
 
@@ -68,17 +76,13 @@
 		const highNote2 = this.add.circle(300, 100, 10, 0xffffff);
 		const highNote3 = this.add.circle(300, 100, 10, 0xffffff);
 
-		this.physics.add.existing(c1);
-		this.physics.add.existing(midNote1);
-		this.physics.add.existing(highNote1);
-		this.physics.add.existing(highNote2);
-		this.physics.add.existing(highNote3);
+		const createPhysicsNoteCircle = createNoteCircle.bind(this, this.physics);
 
-		createNoteCircle(c1, 'chord', 100);
-		createNoteCircle(midNote1, 'midNote', 150);
-		createNoteCircle(highNote1, 'highNote', 200);
-		createNoteCircle(highNote2, 'highNote', 200);
-		createNoteCircle(highNote3, 'highNote', 200);
+		createPhysicsNoteCircle(chord, 'chord', 100);
+		createPhysicsNoteCircle(midNote1, 'midNote', 150);
+		createPhysicsNoteCircle(highNote1, 'highNote', 200);
+		createPhysicsNoteCircle(highNote2, 'highNote', 200);
+		createPhysicsNoteCircle(highNote3, 'highNote', 200);
 
 		this.physics.world.on('worldbounds', collideWorld);
 

@@ -79,9 +79,6 @@
 		if (audioEnabled && chordPlaying === true) {
 			chordSynth.triggerAttackRelease(chord, 3.5);
 		}
-		setTimeout(() => {
-			dispatch('updateChordPlaying', false);
-		}, 100);
 	}
 
 	function updateMidNotePlaying() {
@@ -89,9 +86,6 @@
 			const midNote = chord[getRandomInt(chord.length)];
 			midNoteSynth.triggerAttackRelease(midNote, 1);
 		}
-		setTimeout(() => {
-			dispatch('updateMidNotePlaying', false);
-		}, 100);
 	}
 
 	function getRandomInt(max) {
@@ -103,9 +97,6 @@
 			const noteToPlay = chord[getRandomInt(chord.length)];
 			highNoteSynth.triggerAttackRelease(noteToPlay, .2);
 		}
-		setTimeout(() => {
-			dispatch('updateHighNotePlaying', false);
-		}, 100);
 	}
 
 	function handleStart() {
